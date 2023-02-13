@@ -1,7 +1,9 @@
+// @ts-nocheck
 import React, {useState, useEffect} from "react";
 import { AgGridReact } from 'ag-grid-react';
 import {AppBar, Toolbar, Typography, IconButton} from "@mui/material";
 import AddTodo from "./AddTodo.js";
+import AgGridColumn from "ag-grid-react/lib/shared/agGridColumn.js";
 
 import './App.css';
 import 'ag-grid-community/styles/ag-grid.css';
@@ -29,19 +31,6 @@ function App() {
     Object.defineProperty(item, "id", {value: keys[index]}));
     setTodos(valueKeys);
   }
-
-  const renderDeleteBtn = params => {
-    <IconButton onClick={() => deleteTodo(params.value)} size="small" color="error"><DeleteIcon /></IconButton>
-  }
-
-  const columnDefs = [
-    {field:"description", sortable:true, filter:true, suppressMovable:true},
-    {field:"date", sortable:true, filter:true, suppressMovable:true},
-    {field:"priority", sortable:true, filter:true, suppressMovable:true},
-    {field:"id", sortable:false, filter:false, suppressMovable:true, width:90, cellRenderer: IconButton(onclick=() => deleteTodo(this.value))/*params => {
-      <IconButton onClick={() => deleteTodo(params.value)} size="small" color="error"><DeleteIcon /></IconButton>
-    }*/},
-  ]
 
   const addTodo = (newTodo) => {
     fetch("https://fiteap-123-default-rtdb.europe-west1.firebasedatabase.app/items/.json",
@@ -72,7 +61,21 @@ function App() {
       </div>
 
       <div className="ag-theme-material" style={ {height: 400, width: "70%", minWidth: 600, margin: 'auto', marginTop: "1em" } }>
-        <AgGridReact rowData={todos} columnDefs={columnDefs} animateRows={true} />
+        <AgGridReact rowData={todos} animateRows={true}>
+          <AgGridColumn sortable={true} filter={true} field='description' />
+          <AgGridColumn sortable={true} filter={true} field='date' />
+          <AgGridColumn sortable={true} filter={true} field='priority' />
+          <AgGridColumn 
+            headerName=''
+            field='id' 
+            width={90}
+            cellRenderer={ params => 
+              <IconButton onClick={() => deleteTodo(params.value)} size="small" color="error">
+                <DeleteIcon />
+              </IconButton>
+            }
+          />      
+        </AgGridReact>
       </div>
 
     </div>
