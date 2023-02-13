@@ -1,10 +1,11 @@
+// @ts-nocheck
 import React, {useState} from 'react';
 import {Button, TextField, Dialog, DialogTitle, DialogContent, DialogActions} from "@mui/material";
 
-function AddTodo(props) {
+function AddBook(props) {
 
     const [open, setOpen] = useState(false);
-    const [todo, setTodo] = useState({description: "", date: "", priority: "", });
+    const [book, setBook] = useState({description: "", date: "", priority: "", });
 
     const handleOpen = () => {
         setOpen(true);
@@ -15,24 +16,24 @@ function AddTodo(props) {
       }
 
       const handleSave = () => {
-          props.addTodo(todo);
+          props.addBook(book);
           handleClose();
       }
 
       const handleCancel = () => {
-          setTodo({description: "", date: "", priority: ""});
+          setBook({description: "", date: "", priority: ""});
           handleClose();
       }
 
       const inputChanged = (event) => {
-          setTodo({...todo, [event.target.name]: event.target.value});
+          setBook({...book, [event.target.name]: event.target.value});
       }
 
     return(
         <div>
 
             <Button variant="contained" color="primary" onClick={handleOpen}>
-                Add a new task
+                Add a new book
             </Button>
 
             <Dialog open={open} onClose={handleClose}>
@@ -41,25 +42,42 @@ function AddTodo(props) {
                 <TextField 
                 autoFocus 
                 margin="dense" 
-                name="description"
-                value={todo.description}
-                label="Description" 
+                name="author"
+                value={book.author}
+                label="Author" 
                 onChange={inputChanged}
                 type="text"
                 fullWidth 
                 />
                 <TextField 
                 margin="dense" 
-                name="date"
-                value={todo.date} 
+                name="isbn"
+                value={book.isbn} 
+                label="ISBN"
                 onChange={inputChanged}
-                type="date" 
+                type="text" 
                 />
                 <TextField 
                 margin="dense" 
-                name="priority" 
-                value={todo.priority}
-                label="Urgency level" 
+                name="price"
+                value={book.price} 
+                label="Price"
+                onChange={inputChanged}
+                type="text" 
+                />
+                <TextField 
+                margin="dense" 
+                name="title"
+                value={book.title} 
+                label="Title"
+                onChange={inputChanged}
+                type="text" 
+                />
+                <TextField 
+                margin="dense" 
+                name="year" 
+                value={book.year}
+                label="Year" 
                 onChange={inputChanged}
                 type="text" 
                 />
@@ -75,4 +93,4 @@ function AddTodo(props) {
     )
 }
 
-export default AddTodo;
+export default AddBook;
