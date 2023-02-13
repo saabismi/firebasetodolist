@@ -38,9 +38,9 @@ function App() {
     {field:"description", sortable:true, filter:true, suppressMovable:true},
     {field:"date", sortable:true, filter:true, suppressMovable:true},
     {field:"priority", sortable:true, filter:true, suppressMovable:true},
-    {field:"id", sortable:false, filter:false, suppressMovable:true, width:90, cellRenderer:params => {
+    {field:"id", sortable:false, filter:false, suppressMovable:true, width:90, cellRenderer: IconButton(onclick=() => deleteTodo(this.value))/*params => {
       <IconButton onClick={() => deleteTodo(params.value)} size="small" color="error"><DeleteIcon /></IconButton>
-    }},
+    }*/},
   ]
 
   const addTodo = (newTodo) => {
