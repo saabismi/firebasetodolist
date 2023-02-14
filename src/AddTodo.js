@@ -28,13 +28,6 @@ function AddTodo(props) {
           setTodo({...todo, [event.target.name]: event.target.value});
       }
 
-      function deleteCellRenderer(params) {
-          let editingCells = params.api.getEditingCells();
-          let isCurrentRowEditing = editingCells.some((cell) => {
-              return cell.rowIndex === params.node.rowIndex;
-          })
-      }
-
     return(
         <div>
 

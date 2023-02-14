@@ -1,5 +1,6 @@
+// @ts-nocheck
 import React, {useState, useEffect} from "react";
-import { AgGridReact } from 'ag-grid-react';
+import { AgGridReact, AgGridColumn } from 'ag-grid-react';
 import {AppBar, Toolbar, Typography, IconButton} from "@mui/material";
 import AddTodo from "./AddTodo.js";
 
@@ -16,6 +17,7 @@ function App() {
     fetchItems();
   }, []);
 
+  // Get data from db
   const fetchItems = () => {
     fetch('https://fiteap-123-default-rtdb.europe-west1.firebasedatabase.app/items/.json')
     .then(response => response.json())
@@ -34,15 +36,14 @@ function App() {
     <IconButton onClick={() => deleteTodo(params.value)} size="small" color="error"><DeleteIcon /></IconButton>
   }
 
+  /* This works in the new version but I couldn't manage to make the delete button work like this
   const columnDefs = [
     {field:"description", sortable:true, filter:true, suppressMovable:true},
     {field:"date", sortable:true, filter:true, suppressMovable:true},
     {field:"priority", sortable:true, filter:true, suppressMovable:true},
-    {field:"id", sortable:false, filter:false, suppressMovable:true, width:90, cellRenderer: IconButton(onclick=() => deleteTodo(this.value))/*params => {
-      <IconButton onClick={() => deleteTodo(params.value)} size="small" color="error"><DeleteIcon /></IconButton>
-    }*/},
-  ]
+  ]*/
 
+  // Add todo item to db
   const addTodo = (newTodo) => {
     fetch("https://fiteap-123-default-rtdb.europe-west1.firebasedatabase.app/items/.json",
     {
@@ -53,6 +54,7 @@ function App() {
     .catch(err => console.error(err))
   }
 
+  // Remove todo item from db
   const deleteTodo = (id) => {
     fetch(`https://fiteap-123-default-rtdb.europe-west1.firebasedatabase.app/items/${id}.json`,
     {
@@ -71,8 +73,22 @@ function App() {
         <AddTodo addTodo={addTodo} />
       </div>
 
-      <div className="ag-theme-material" style={ {height: 400, width: "70%", minWidth: 600, margin: 'auto', marginTop: "1em" } }>
-        <AgGridReact rowData={todos} columnDefs={columnDefs} animateRows={true} />
+      <div className="ag-theme-material" style={ {height: 400, width: "70%", margin: 'auto', marginTop: "1em" } }>
+      <AgGridReact rowData={todos} animateRows={true}>
+          <AgGridColumn sortable={true} filter={true} field='description' />
+          <AgGridColumn sortable={true} filter={true} field='date' />
+          <AgGridColumn sortable={true} filter={true} field='priority' />
+          <AgGridColumn 
+            headerName=''
+            field='id' 
+            width={90}
+            cellRenderer={ params => 
+              <IconButton onClick={() => deleteTodo(params.value)} size="small" color="error">
+                <DeleteIcon />
+              </IconButton>
+            }
+          />      
+        </AgGridReact>
       </div>
 
     </div>
